@@ -1,4 +1,4 @@
-CXXFLAGS= -O3 -s -I./include -L./bin -lglfw3 -lopengl32
+CXXFLAGS=-O3 -s -I./include -L./bin -lglfw3 -lopengl32
 SRC_DIR:=$(wildcard ./src/*.cpp)
 SRC_OBJ:=$(patsubst %.cpp,%.o,$(SRC_DIR))
 SRC_DEP:=$(patsubst %.cpp,%.d,$(SRC_DIR))

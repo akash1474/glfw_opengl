@@ -1,0 +1,38 @@
+[
+ {
+  "directory": "D:\\Programs\\c++\\glfw_opengl",
+  "arguments": [
+   "g++",
+   "-std=c++17",
+   "-O3",
+   "-s",
+   "-I./include",
+   "-L./bin",
+   "-lglfw3",
+   "-lopengl32",
+   "-c",
+   "-o",
+   "lib/glad.o",
+   "lib/glad.cpp"
+  ],
+  "file": "lib/glad.cpp"
+ },
+ {
+  "directory": "D:\\Programs\\c++\\glfw_opengl",
+  "arguments": [
+   "g++",
+   "-std=c++17",
+   "-O3",
+   "-s",
+   "-I./include",
+   "-L./bin",
+   "-lglfw3",
+   "-lopengl32",
+   "-c",
+   "-o",
+   "src/main.o",
+   "src/main.cpp"
+  ],
+  "file": "src/main.cpp"
+ }
+]
