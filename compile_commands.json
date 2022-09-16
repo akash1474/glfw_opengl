@@ -7,15 +7,17 @@
    "-O3",
    "-s",
    "-I./include",
+   "-I./lib/include",
    "-L./bin",
    "-lglfw3",
    "-lopengl32",
+   "-lglew32",
    "-c",
    "-o",
-   "lib/glad.o",
-   "lib/glad.cpp"
+   "src/main.o",
+   "src/main.cpp"
   ],
-  "file": "lib/glad.cpp"
+  "file": "src/main.cpp"
  },
  {
   "directory": "D:\\Programs\\c++\\glfw_opengl",
@@ -25,14 +27,16 @@
    "-O3",
    "-s",
    "-I./include",
+   "-I./lib/include",
    "-L./bin",
    "-lglfw3",
    "-lopengl32",
+   "-lglew32",
    "-c",
    "-o",
-   "src/main.o",
-   "src/main.cpp"
+   "src/Shader.o",
+   "src/Shader.cpp"
   ],
-  "file": "src/main.cpp"
+  "file": "src/Shader.cpp"
  }
 ]
