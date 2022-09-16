@@ -20,7 +20,7 @@ std::string Shader::ReadFileAsString(const std::string& filepath)
 	}
 	else
 	{
-		printf("Could not open file %c'", filepath.c_str());
+		printf("Could not open file %s", filepath.c_str());
 	}
 
 	return result;
@@ -52,7 +52,7 @@ GLuint Shader::CompileShader(GLenum type, const std::string& source)
 
 		glDeleteShader(shader);
 
-		printf("%c", infoLog.data());
+		printf("%s", infoLog.data());
 		// HZ_CORE_ASSERT(false, "Shader compilation failure!");
 	}
 
@@ -96,7 +96,7 @@ void Shader::LoadFromGLSLTextFiles(const std::string& vertexShaderPath, const st
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
-		printf("%c", infoLog.data());
+		printf("%s", infoLog.data());
 	}
 	
 	glDetachShader(program, vertexShader);

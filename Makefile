@@ -15,7 +15,8 @@ all:$(SRC_OBJ)
 	@echo $<
 	@$(CXX) -std=c++17 $(CXXFLAGS) -c -o $@ $<
 clean:
-	rm ./src/*.o ./lib/*.o ./bin/*.exe
+	@rm -r ./src/*.o 
+	@rm -r ./bin/*.exe
 
 run:
 	./bin/main.exe

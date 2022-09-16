@@ -7,6 +7,7 @@
 #include "sstream"
 #include "glm/glm.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "Shader.h"
 
 
 #define WIDTH 600
@@ -67,6 +68,7 @@ int main(void)
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", NULL, NULL);
     if (!window)
@@ -94,39 +96,18 @@ int main(void)
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,sizeof(float)*2,0);
-
     glViewport(0, 0, WIDTH, HEIGHT);
     glOrtho(0, WIDTH, HEIGHT, 0, 0,1);
 
-    siv::PerlinNoise noise;
-    float inc=0.03;
-    float start=0.0;
-
-    Vec2f prev;
+    Shader* sh;
+    sh=Shader::FromGLSLTextFiles("./shaders/vertex.shader", "./shaders/fragment.shader");
+    glUseProgram(sh->GetRendererID());
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 
-        showFPS(window);
-        float xoff=start;
-        bool isFirst=true;
-        for (int x = 0; x < 50; x++){
-            double ny=noise.octave1D_01(xoff,4);
-            if(isFirst){
-                putpixel(x,ny*HEIGHT);
-                isFirst=false;
-            }else{
-                line(prev.x,prev.y,x*12,ny*HEIGHT);
-                glColor3f(0.0,0.756,0.6274);
-                line(x*12,ny*HEIGHT,x*12,ny*HEIGHT+10);
-                glColor3f(1.0,1.0,1.0);
-            }
-            prev.x=x*12;
-            prev.y=ny*HEIGHT;
-            xoff+=inc;
-        }
-        start+=inc;
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
         glfwSwapBuffers(window);
         glfwPollEvents();

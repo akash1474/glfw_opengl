@@ -15,6 +15,7 @@
 *.jpg
 *.mp4
 *.mp3
+*.exe
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
