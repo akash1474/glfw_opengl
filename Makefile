@@ -8,7 +8,8 @@ SRC_DEP:=$(patsubst %.cpp,%.d,$(SRC_DIR))
 
 all:$(SRC_OBJ)
 	@echo main.exe
-	@g++ $(SRC_OBJ) $(CXXFLAGS) -o ./bin/main && ./bin/main.exe
+	@g++ $(SRC_OBJ) $(CXXFLAGS) -o ./bin/main 
+	@./bin/main.exe
 
 %.o:%.cpp
 	@echo $<
