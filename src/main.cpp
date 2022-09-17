@@ -8,9 +8,10 @@
 #include "glm/glm.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "Shader.h"
+#include "Texture.h"
 
 
-#define WIDTH 600
+#define WIDTH 480
 #define HEIGHT 480
 
 struct Vec2f{
@@ -84,19 +85,17 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     float positions[]=
-    { //               COORDINATES                  /     COLORS           //
-        -0.5f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f, // Lower left corner
-         0.5f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f, // Lower right corner
-         0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f,     1.0f, 0.6f,  0.32f, // Upper corner
-        -0.25f, 0.5f * float(sqrt(3)) * 1 / 6, 0.0f,     0.9f, 0.45f, 0.17f, // Inner left
-         0.25f, 0.5f * float(sqrt(3)) * 1 / 6, 0.0f,     0.9f, 0.45f, 0.17f, // Inner right
-         0.0f, -0.5f * float(sqrt(3)) * 1 / 3, 0.0f,     0.8f, 0.3f,  0.02f  // Inner down
+    { //     COORDINATES     /        COLORS      /   TexCoord  //
+        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f, // Lower left corner
+        -0.5f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // Upper left corner
+         0.5f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,   1.0f, 1.0f, // Upper right corner
+         0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 1.0f,   1.0f, 0.0f  // Lower right corner
     };
 
+
     unsigned int indices[]={
-        0,3,5,
-        3,2,4,
-        5,4,1
+        0, 2, 1, // Upper triangle
+        0, 3, 2 // Lower triangle
     };
 
     unsigned int VBO,EBO;
@@ -110,9 +109,11 @@ int main(void)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(float)*6,(const void*)0);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(float)*6,(const void*)(3*sizeof(float)));
+    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)(6*sizeof(float)));
 
     glViewport(0, 0, WIDTH, HEIGHT);
     glOrtho(0, WIDTH, HEIGHT, 0, 0,1);
@@ -121,13 +122,21 @@ int main(void)
     glUseProgram(sh->GetRendererID());
 
     unsigned int uId=glGetUniformLocation(sh->GetRendererID(),"scale");
-    glUniform1f(uId,0.5f);
+    glUniform1f(uId,0.8f);
+
+    Texture popCat("./assets/pop_cat.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    popCat.texUnit(sh, "tex0", 0);
+    popCat.Bind();
 
     while (!glfwWindowShouldClose(window))
     {
+        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 
-        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -136,8 +145,10 @@ int main(void)
     // glDeleteVertexArrays();
     glDeleteBuffers(1,&VBO);
     glDeleteBuffers(1,&EBO);
+    popCat.Delete();
 
 
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }

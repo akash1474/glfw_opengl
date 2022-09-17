@@ -59,6 +59,10 @@ GLuint Shader::CompileShader(GLenum type, const std::string& source)
 	return shader;
 }
 
+void Shader::activate(){
+	glUseProgram(GetRendererID());
+}
+
 Shader* Shader::FromGLSLTextFiles(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 {
 	Shader* shader = new Shader();
