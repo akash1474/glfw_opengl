@@ -6,7 +6,8 @@
 #include "chrono"
 #include "sstream"
 #include "glm/glm.hpp"
-#include "glm/ext/matrix_transform.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "Shader.h"
 #include "Texture.h"
 
@@ -14,51 +15,33 @@
 #define WIDTH 480
 #define HEIGHT 480
 
-struct Vec2f{
+struct Vec2f {
     float x;
     float y;
-    Vec2f(){};
-    Vec2f(float a,float b):x(a),y(b){}
+    Vec2f() {};
+    Vec2f(float a, float b): x(a), y(b) {}
 };
 
-void line(const Vec2f& p1,const Vec2f& p2){
+void line(const Vec2f& p1, const Vec2f& p2) {
     glBegin(GL_LINES);
-    glVertex2f(p1.x,p1.y);
-    glVertex2f(p2.x,p2.y);
+    glVertex2f(p1.x, p1.y);
+    glVertex2f(p2.x, p2.y);
     glEnd();
 }
 
-void line(int x1,int y1,int x2,int y2){
+void line(int x1, int y1, int x2, int y2) {
     glBegin(GL_LINES);
-    glVertex2f(x1,y1);
-    glVertex2f(x2,y2);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
     glEnd();
 }
 
-void putpixel(float x1,float y1){
+void putpixel(float x1, float y1) {
     glBegin(GL_POINTS);
-    glVertex2f(x1,y1);
+    glVertex2f(x1, y1);
     glEnd();
 }
 
-double lastTime;
-int nbFrames=0;
-
-void showFPS(GLFWwindow *pWindow)
-{
-    // Measure speed
-     double currentTime = glfwGetTime();
-     double delta = currentTime - lastTime;
-     nbFrames++;
-     if ( delta >= 1.0 ){
-         double fps = double(nbFrames) / delta;
-         std::stringstream ss;
-         ss <<" [" << fps << " FPS]";
-         glfwSetWindowTitle(pWindow, ss.str().c_str());
-         nbFrames = 0;
-         lastTime = currentTime;
-     }
-}
 
 int main(void)
 {
@@ -79,62 +62,91 @@ int main(void)
     }
 
     glfwMakeContextCurrent(window);
-    if(glewInit()!=GLEW_OK) std::cout << "Error" << std::endl;
+    if (glewInit() != GLEW_OK) std::cout << "Error" << std::endl;
 
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    float positions[]=
+    float positions[] =
     { //     COORDINATES     /        COLORS      /   TexCoord  //
-        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f, // Lower left corner
-        -0.5f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // Upper left corner
-         0.5f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,   1.0f, 1.0f, // Upper right corner
-         0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 1.0f,   1.0f, 0.0f  // Lower right corner
+        -0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,    0.0f, 0.0f,
+        -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,    5.0f, 0.0f,
+         0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,    0.0f, 0.0f,
+         0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,    5.0f, 0.0f,
+         0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,    2.5f, 5.0f
     };
-
-
-    unsigned int indices[]={
-        0, 2, 1, // Upper triangle
-        0, 3, 2 // Lower triangle
+    unsigned int indices[] = {
+        0, 1, 2,
+        0, 2, 3,
+        0, 1, 4,
+        1, 2, 4,
+        2, 3, 4,
+        3, 0, 4
     };
+    unsigned int VBO, EBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
-    unsigned int VBO,EBO;
-    glGenBuffers(1,&VBO);
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(positions),positions,GL_STATIC_DRAW);
 
-
-    glGenBuffers(1,&EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)(3*sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,sizeof(float)*8,(const void*)(6*sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)(6 * sizeof(float)));
 
     glViewport(0, 0, WIDTH, HEIGHT);
-    glOrtho(0, WIDTH, HEIGHT, 0, 0,1);
+    glOrtho(0, WIDTH, HEIGHT, 0, 1, -1);
 
-    Shader* sh=Shader::FromGLSLTextFiles("./shaders/vertex.shader", "./shaders/fragment.shader");
+    Shader* sh = Shader::FromGLSLTextFiles("./shaders/vertex.glsl", "./shaders/fragment.glsl");
     glUseProgram(sh->GetRendererID());
 
-    unsigned int uId=glGetUniformLocation(sh->GetRendererID(),"scale");
-    glUniform1f(uId,0.8f);
+    unsigned int uId = glGetUniformLocation(sh->GetRendererID(), "scale");
+    glUniform1f(uId, 1.0f);
 
-    Texture popCat("./assets/pop_cat.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    Texture popCat("./assets/brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     popCat.texUnit(sh, "tex0", 0);
     popCat.Bind();
 
+    float rotation=0.0f;
+    double prevTime=glfwGetTime();
+
+
+    glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        double crntTime=glfwGetTime();
+        if(crntTime-prevTime>=1/60){
+            rotation+=0.9f;
+            prevTime=crntTime;
+        }
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glm::mat4 model=glm::mat4(1.0f);
+        glm::mat4 view=glm::mat4(1.0f);
+        glm::mat4 proj=glm::mat4(1.0f);
+
+        // Assigns different transformations to each matrix;
+        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
+        proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+
+        // Outputs the matrices into the Vertex Shader
+        int modelLoc = glGetUniformLocation(sh->GetRendererID(), "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        int viewLoc = glGetUniformLocation(sh->GetRendererID(), "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        int projLoc = glGetUniformLocation(sh->GetRendererID(), "proj");
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
+        glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
 
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
@@ -143,8 +155,8 @@ int main(void)
     }
 
     // glDeleteVertexArrays();
-    glDeleteBuffers(1,&VBO);
-    glDeleteBuffers(1,&EBO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
     popCat.Delete();
 
 
