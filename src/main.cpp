@@ -10,6 +10,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "Shader.h"
 #include "Texture.h"
+#include "Camera.h"
 
 
 #define WIDTH 480
@@ -113,9 +114,9 @@ int main(void)
     popCat.texUnit(sh, "tex0", 0);
     popCat.Bind();
 
-    float rotation=0.0f;
-    double prevTime=glfwGetTime();
 
+    // Creates camera object
+    Camera camera(WIDTH, HEIGHT, glm::vec3(0.0f, 0.0f, 2.0f));
 
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
@@ -123,28 +124,10 @@ int main(void)
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        double crntTime=glfwGetTime();
-        if(crntTime-prevTime>=1/60){
-            rotation+=0.9f;
-            prevTime=crntTime;
-        }
-
-        glm::mat4 model=glm::mat4(1.0f);
-        glm::mat4 view=glm::mat4(1.0f);
-        glm::mat4 proj=glm::mat4(1.0f);
-
-        // Assigns different transformations to each matrix;
-        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-        view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-        proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-
-        // Outputs the matrices into the Vertex Shader
-        int modelLoc = glGetUniformLocation(sh->GetRendererID(), "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        int viewLoc = glGetUniformLocation(sh->GetRendererID(), "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        int projLoc = glGetUniformLocation(sh->GetRendererID(), "proj");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+        // Handles camera inputs
+        camera.Inputs(window);
+        // Updates and exports the camera matrix to the Vertex Shader
+        camera.Matrix(45.0f, 0.1f, 100.0f, sh, "camMatrix");
 
         glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
