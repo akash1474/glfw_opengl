@@ -1,3 +1,11 @@
 [submodule "packages/glfw"]
 	path = packages/glfw
 	url = https://github.com/glfw/glfw
+
+[submodule "packages/spdlog"]
+	path = packages/spdlog
+	url = https://github.com/gabime/spdlog
+
+[submodule "packages/imgui"]
+	path = packages/imgui
+	url = https://github.com/ocornut/imgui

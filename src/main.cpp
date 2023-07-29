@@ -19,7 +19,6 @@ int main(){
     }
 
     glfwMakeContextCurrent(window);
-    // if (glewInit() != GLEW_OK) std::cout << "Error" << std::endl;
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
