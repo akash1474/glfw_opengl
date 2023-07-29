@@ -10,11 +10,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includeDirs={}
 includeDirs["glfw"]="packages/glfw/include"
+includeDirs["SpdLog"]="packages/spdlog/include"
+includeDirs["ImGui"]="packages/imgui"
 
 -- /MP -- Multithreaded build 
 -- /MT -- Static Linking. Defines _MT 
 -- /MD -- Dynamic Linking. Defines _MT and _DLL 
 include "packages/glfw"
+include "packages/imgui"
 
 project "glfw_opengl"
    kind "ConsoleApp"
@@ -25,14 +28,15 @@ project "glfw_opengl"
    pchheader "pch.h"
    pchsource "src/pch.cpp"
 
-   -- libdirs{"packages/glfw/lib"}
    links {
-      "glfw","opengl32"
+      "glfw","ImGui","opengl32"
    }
 
    includedirs{
       "src",
-      "%{includeDirs.glfw}"
+      "%{includeDirs.glfw}",
+      "%{includeDirs.ImGui}",
+      "%{includeDirs.SpdLog}"
    }
 
    files { 
@@ -49,6 +53,7 @@ project "glfw_opengl"
       staticruntime "On"
       optimize "Off"
       buildoptions { "/MP" }
+      defines {"GL_DEBUG"}
 
    filter {"configurations:Release"}
       runtime "Release"
@@ -57,7 +62,7 @@ project "glfw_opengl"
       characterset ("MBCS")
       staticruntime "On"
       buildoptions { "/MP","/utf-8" }
-      defines {"FT_DEBUG","_CRT_SECURE_NO_WARNINGS"}
+      defines {"GL_DEBUG","_CRT_SECURE_NO_WARNINGS"}
 
    filter "configurations:Dist"
       kind "WindowedApp"
