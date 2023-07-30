@@ -1,4 +1,3 @@
-#include "imgui.h"
 #include "pch.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_img.h"
@@ -8,12 +7,6 @@
 
 int width{0};
 int height{0};
-
-void window_close_callback(GLFWwindow* window)
-{
-    glfwSetWindowShouldClose(window, GLFW_TRUE);
-    glfwDestroyWindow(window);
-}
 
 void draw(GLFWwindow* window)
 {
@@ -80,32 +73,28 @@ int main(void){
 
     GL_INFO("Initializing Fonts");
     io.Fonts->Clear();
+    io.IniFilename=nullptr;
+    io.LogFilename=nullptr;
+
+    static const ImWchar icons_ranges[] = {ICON_MIN_FA,ICON_MAX_FA,0};
     ImFontConfig icon_config;
     icon_config.MergeMode = true;
     icon_config.PixelSnapH = true;
-    static const ImWchar icons_ranges[] = {ICON_MIN_FA, ICON_MAX_FA};
-    size_t font_data_size = IM_ARRAYSIZE(data_font);
-    size_t icon_data_size = IM_ARRAYSIZE(data_icon);
+    icon_config.FontDataOwnedByAtlas=false;
 
-    io.Fonts->AddFontFromMemoryTTF(data_font, (int)font_data_size,16);
-    // io.Fonts->AddFontFromMemoryTTF(data_icon, (int)icon_data_size,20*2.0f/3.0f,&icon_config,icons_ranges);
+    const int font_data_size = IM_ARRAYSIZE(data_font);
+    const int icon_data_size = IM_ARRAYSIZE(data_icon);
 
-    // io.Fonts->AddFontFromMemoryTTF(data_font, (int)font_data_size,18);
-    // io.Fonts->AddFontFromMemoryTTF(data_icon, (int)icon_data_size,18*2.0f/3.0f,&icon_config,icons_ranges);
-
-    // io.Fonts->AddFontFromMemoryTTF(data_font, (int)font_data_size,14);
-    // io.Fonts->AddFontFromMemoryTTF(data_icon, (int)icon_data_size,14*2.0f/3.0f,&icon_config,icons_ranges);
-
-    // io.Fonts->AddFontFromMemoryTTF(data_font, (int)font_data_size,26);
-    // io.Fonts->AddFontFromMemoryTTF(data_icon, (int)icon_data_size,26*2.0f/3.0f,&icon_config,icons_ranges);
+    ImFontConfig font_config;
+    font_config.FontDataOwnedByAtlas=false;
+    io.Fonts->AddFontFromMemoryTTF((void*)data_font, font_data_size,16,&font_config);
+    io.Fonts->AddFontFromMemoryTTF((void*)data_icon, icon_data_size,20*2.0f/3.0f,&icon_config,icons_ranges);
 
     // glfwSwapInterval(1);
     ImGuiStyle& style = ImGui::GetStyle();
     style.FrameRounding = 2.0f;
     style.ItemSpacing.y=6.0f;
     style.ScrollbarRounding=2.0f;
-    glfwSetWindowCloseCallback(window, window_close_callback);
-    ImGui::GetIO().IniFilename=NULL;
 
     while (!glfwWindowShouldClose(window)) {
         glfwGetWindowSize(window, &width, &height);
