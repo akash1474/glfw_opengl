@@ -1,5 +1,5 @@
 @echo off
-set solution_name=
+set solution_name=""
 
 for %%i in ("*.sln") do set solution_name=%%i
 
