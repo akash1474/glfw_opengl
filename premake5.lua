@@ -32,7 +32,7 @@ project "glfw_opengl"
    pchsource "src/pch.cpp"
 
    links {
-      "glfw","ImGui","opengl32","LunaSVG"
+      "glfw","ImGui","opengl32","LunaSVG","dwmapi","Shlwapi","winmm"
    }
 
    includedirs{

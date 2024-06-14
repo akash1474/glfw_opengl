@@ -1,6 +1,11 @@
 #include "pch.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_img.h"
+#include <dwmapi.h>
+#include <windef.h>
+#include <wingdi.h>
+#include "recursive_linear_medium.h"
+#include "fa-solid-900.h"
 
 #define WIDTH 400
 #define HEIGHT 600
@@ -15,8 +20,12 @@ void draw(GLFWwindow* window)
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ImGui_ImplOpenGL2_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
+    #ifdef GL_USE_OPENGL_LATEST
+        ImGui_ImplOpenGL3_NewFrame();
+    #else
+        ImGui_ImplOpenGL2_NewFrame();
+    #endif
+        ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     // Render Other Stuff
 
@@ -26,8 +35,12 @@ void draw(GLFWwindow* window)
 
     // End of render
     ImGui::Render();
-    ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-    glfwSwapBuffers(window);
+    #ifdef GL_USE_OPENGL_LATEST
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    #else
+        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    #endif
+        glfwSwapBuffers(window);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -45,11 +58,13 @@ int main(void){
 
     if (!glfwInit()) return -1;
 
+#ifdef GL_USE_OPENGL_LATEST
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+#endif
 
-    window = glfwCreateWindow(WIDTH, HEIGHT, "File Transfer", NULL, NULL);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL Starter", NULL, NULL);
     glfwSetWindowSizeLimits(window, 330, 500, GLFW_DONT_CARE, GLFW_DONT_CARE);
     if (!window) {
         glfwTerminate();
@@ -57,11 +72,11 @@ int main(void){
     }
 
     glfwMakeContextCurrent(window);
+    GL_INFO("OPENGL - {}",(const char*)glGetString(GL_VERSION));
+    HWND WinHwnd=glfwGetWin32Window(window);
+    BOOL USE_DARK_MODE = true;
+    BOOL SET_IMMERSIVE_DARK_MODE_SUCCESS = SUCCEEDED(DwmSetWindowAttribute(WinHwnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,&USE_DARK_MODE, sizeof(USE_DARK_MODE)));
 
-    GLFWimage images[1]; 
-    images[0].pixels = stbi_load_from_memory(logo_img,IM_ARRAYSIZE(logo_img), &images[0].width, &images[0].height, 0, 4); //rgba channels 
-    glfwSetWindowIcon(window, 1, images); 
-    stbi_image_free(images[0].pixels);
 
     // Initialize ImGUI
     IMGUI_CHECKVERSION();
@@ -69,7 +84,14 @@ int main(void){
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
 
-    if (!ImGui_ImplOpenGL2_Init()) GL_ERROR("Failed to initit OpenGL 2");
+    #ifdef GL_USE_OPENGL_LATEST
+        if(!ImGui_ImplOpenGL3_Init()){
+    #else
+        if(!ImGui_ImplOpenGL2_Init()){
+    #endif
+        GL_CRITICAL("FAILED INIT IMGUI");
+        return false;
+    }
 
     GL_INFO("Initializing Fonts");
     io.Fonts->Clear();
@@ -102,7 +124,11 @@ int main(void){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    #ifdef GL_USE_OPENGL_LATEST
+        ImGui_ImplOpenGL3_NewFrame();
+    #else
         ImGui_ImplOpenGL2_NewFrame();
+    #endif
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         // Render Other Stuff
@@ -114,12 +140,20 @@ int main(void){
 
         // End of render
         ImGui::Render();
+    #ifdef GL_USE_OPENGL_LATEST
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    #else
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    #endif        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    ImGui_ImplOpenGL2_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
+    #ifdef GL_USE_OPENGL_LATEST
+        ImGui_ImplOpenGL3_Shutdown();
+    #else 
+        ImGui_ImplOpenGL2_Shutdown();
+    #endif
+        ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
