@@ -1,6 +1,14 @@
 -- Building
 -- MsBuild XPlayer.sln /p:configuration=Release
 
+-- newaction {
+--     trigger = "setup",
+--     description = "Runs a custom Lua script",
+--     execute = function()
+--         dofile("myscript.lua") -- Runs 'myscript.lua' in the same context
+--     end
+-- }
+
 workspace "GLFWProject"
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
@@ -12,8 +20,8 @@ includeDirs={}
 includeDirs["glfw"]="packages/glfw/include"
 includeDirs["SpdLog"]="packages/spdlog/include"
 includeDirs["ImGui"]="packages/imgui"
-includeDirs["Mini"]="packages/mINI/src/mini"
 includeDirs["LunaSVG"]="packages/lunasvg/include"
+includeDirs["nlohmann"]="packages/nlohmann"
 
 -- /MP -- Multithreaded build 
 -- /MT -- Static Linking. Defines _MT 
@@ -39,9 +47,9 @@ project "glfw_opengl"
       "src",
       "%{includeDirs.glfw}",
       "%{includeDirs.ImGui}",
-      "%{includeDirs.Mini}",
       "%{includeDirs.LunaSVG}",
-      "%{includeDirs.SpdLog}"
+      "%{includeDirs.SpdLog}",
+      "%{includeDirs.nlohmann}"
    }
 
    files { 
