@@ -1,0 +1,27 @@
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  performance-*,
+  -performance-no-int-to-ptr,
+  modernize-*,
+  -modernize-use-trailing-return-type
+  readability-*,
+  -readability-magic-numbers,
+  -readability-implicit-bool-conversion,
+  -readability-uppercase-literal-suffix,
+  -readability-identifier-length,
+  -readability-isolate-declaration,
+  clang-analyzer-*,
+  unused-parameter,
+  misc-unused-parameters
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle: file
+
+CheckOptions:
+  - key: modernize-use-trailing-return-type.TransformFunctions
+    value: 'false'
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '2'

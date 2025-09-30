@@ -9,12 +9,12 @@ project "LunaSVG"
 	{
 		"source/**.cpp",
 		"source/**.h",
-		"3rdparty/plutovg/**.c",
-		"3rdparty/plutovg/**.h",
+		"plutovg/source/**.c",
+		"plutovg/include/**.h",
 		"include/**.h"
 	}
 
-	includedirs{"src","include","3rdparty/plutovg"}
+	includedirs{"src","include","plutovg/include"}
 
 	filter "system:windows"
 		systemversion "latest"

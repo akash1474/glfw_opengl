@@ -1,0 +1,101 @@
+# -----------------------------------------------------------------------------
+# Base Style
+# -----------------------------------------------------------------------------
+BasedOnStyle: GNU        # Start with GNU style as base, then override below
+Language: Cpp            # Applies to C++ files
+Standard: c++17          # Assume C++11 standard when formatting
+
+# -----------------------------------------------------------------------------
+# Indentation and Spacing
+# -----------------------------------------------------------------------------
+IndentWidth: 4           # Indent with 4 spaces
+TabWidth: 4              # A tab character is equivalent to 4 spaces
+UseTab: Never            # Never use actual tab characters, always spaces
+ContinuationIndentWidth: 4 # Indentation for wrapped lines (e.g., arguments)
+ColumnLimit: 100
+
+PointerAlignment: Left   # Put '*' or '&' on the variable, not the type (int* x)
+SpaceBeforeParens: Never  # No space before parentheses in function calls/defs
+SpacesInContainerLiterals: false # No spaces inside {} initializer lists
+
+# -----------------------------------------------------------------------------
+# Blank Lines and Empty Blocks
+# -----------------------------------------------------------------------------
+KeepEmptyLinesAtTheStartOfBlocks: false # Don’t allow blank line right after '{'
+MaxEmptyLinesToKeep: 4                  # Collapse multiple empty lines to 1
+
+# -----------------------------------------------------------------------------
+# Function Declarations & Definitions
+# -----------------------------------------------------------------------------
+AlignAfterOpenBracket: BlockIndent      # Put each argument on its own line
+AllowAllParametersOfDeclarationOnNextLine: false # Don’t move all params together
+AllowShortBlocksOnASingleLine: true     # Allow `{ statement; }` on one line
+AllowShortCaseLabelsOnASingleLine: true # Allow short case: labels inline
+AllowShortFunctionsOnASingleLine: All   # Allow short functions on one line
+
+# Function call arguments
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+
+AlwaysBreakAfterDefinitionReturnType: None # Don’t force return type to new line
+AlwaysBreakAfterReturnType: None           # Same for function declarations
+BinPackParameters: false                   # Don’t group multiple parameters per line
+
+# -----------------------------------------------------------------------------
+# Constructor Initializer Lists
+# -----------------------------------------------------------------------------
+ConstructorInitializerAllOnOneLineOrOnePerLine: true # Each initializer on its own line
+BreakConstructorInitializers: BeforeColon            # Break before ':' in ctor init list
+BreakConstructorInitializersBeforeComma: false
+
+
+# -----------------------------------------------------------------------------
+# Braces and Wrapping
+# -----------------------------------------------------------------------------
+BreakBeforeBraces: Custom     # Use custom brace wrapping rules
+BraceWrapping:
+  AfterClass: true            # `{` on new line after class
+  AfterControlStatement: true # `{` on new line after if/for/while
+  AfterEnum: true             # `{` on new line after enum
+  AfterFunction: true         # `{` on new line after function def
+  AfterNamespace: true        # `{` on new line after namespace
+  AfterStruct: true           # `{` on new line after struct
+  AfterUnion: true            # `{` on new line after union
+  AfterExternBlock: true      # `{` on new line after extern "C" block
+  BeforeCatch: true           # `catch` starts on new line
+  BeforeElse: true            # `else` starts on new line
+  IndentBraces: false         # Don’t indent braces themselves
+  SplitEmptyFunction: false   # Keep `void f() {}` on one line
+  SplitEmptyRecord: false     # Keep `struct X {};` on one line
+  SplitEmptyNamespace: false  # Keep `namespace X {}` on one line
+
+# -----------------------------------------------------------------------------
+# Namespaces
+# -----------------------------------------------------------------------------
+NamespaceIndentation: All     # Indent inside namespaces
+
+# -----------------------------------------------------------------------------
+# Penalty Weights (used by clang-format's cost model)
+# -----------------------------------------------------------------------------
+# PenaltyExcessCharacter: 10000   # Higher = less likely to go past column limit
+PenaltyReturnTypeOnItsOwnLine: 1 # Low = may break return type to new line if needed               
+
+# -----------------------------------------------------------------------------
+# Header Imports (Includes) Formatting
+# -----------------------------------------------------------------------------
+IncludeBlocks: Regroup
+SortIncludes: false
+IncludeCategories:
+  # pch.h always first, no blank line above it
+  - Regex: '^"pch\.h"$'
+    Priority: -1
+    SortPriority: 0
+    CaseSensitive: true
+
+  # System includes
+  - Regex: '^<'
+    Priority: 1
+
+  # Project includes
+  - Regex: '^"'
+    Priority: 2

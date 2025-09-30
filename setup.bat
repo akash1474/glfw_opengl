@@ -1,99 +1,119 @@
 @echo off
-rem "Use `setup imgui-docking` to setup with imgui-docking branch"
+setlocal
 
+rem --- Setup ANSI Colors for the terminal ---
+for /f %%a in ('echo prompt $E^| cmd') do set "ESC=%%a"
+set "yellow=%ESC%[93m"
+set "green=%ESC%[92m"
+set "red=%ESC%[91m"
+set "reset=%ESC%[0m"
 
-set glfw=https://github.com/glfw/glfw.git
-set nlohmannjson=https://github.com/nlohmann/json.git
-set lunasvg=https://github.com/sammycage/lunasvg.git
-set imgui=-o imgui.zip https://codeload.github.com/ocornut/imgui/zip/refs/tags/v1.91.8
-set spdlog=-o spdlog.zip https://codeload.github.com/gabime/spdlog/zip/refs/tags/v1.12.0
-
-
-
-echo -- Cloning glfw github repo
-git clone --depth 1 %glfw%
-echo.
-
-echo -- Cloning nlohmannjson github repo
-git clone --depth 1 %nlohmannjson%
-echo.
-
-echo -- Cloning spdlog
-if not exist .\packages\spdlog mkdir .\packages\spdlog
-git clone -b v1.12.0 --single-branch https://github.com/gabime/spdlog.git --depth 1 ./packages/spdlog
-rmdir /s /q .\packages\spdlog\.git
-echo.
-
-echo -- Cloning imgui
-if /i [%1] == [imgui-docking] (
-	echo "ImGui::Docking"
-	git clone -b v1.91.8-docking --single-branch https://github.com/ocornut/imgui.git --depth 1
-) else (
-	echo "ImGui::Main"
-	git clone -b v1.91.8 --single-branch https://github.com/ocornut/imgui.git --depth 1
-)
-echo.
-
-echo -- Cloning lunasvg
-git clone -b v2.3.9 --single-branch https://github.com/sammycage/lunasvg.git --depth 1
-echo.
-
-
-
-if exist glfw (
-	echo.
-	echo Setting Up GLFW
-	move /y ".\glfw\deps" ".\packages\glfw"
-	move /y ".\glfw\include" ".\packages\glfw"
-	move /y ".\glfw\src" ".\packages\glfw"
-) else (
-	echo [ GLFW ] No directory found
-	exit /b
+rem --- Check if Git is installed ---
+git --version > nul 2>&1
+if %errorlevel% neq 0 (
+    echo %red%Error: git is not installed or not in the PATH.%reset%
+    exit /b 1
 )
 
-if exist json (
-	echo.
-	if not exist .\packages\nlohmann (
-		echo "CreatedDir: .\packages\nlohmann"
-		mkdir .\packages\nlohmann
-	)
+rem --- Create main packages directory ---
+if not exist .\packages mkdir .\packages
 
-	echo Setting Up nlohmannjson
-	move /y ".\json\include" ".\packages\nlohmann"
-) else (
-	echo "[ JSON(nlohmannjson) ] No directory found"
-	exit /b
-)
-
+rem --- Package: LunaSVG ---
+echo|set /p="- Installing %yellow%LunaSVG%reset%          ... "
+git clone -b v3.5.0 --single-branch https://github.com/sammycage/lunasvg.git --depth 1 > nul 2>&1
 if exist lunasvg (
-	echo.
-	echo Setting Up LunaSVG
-	move /y ".\lunasvg\*" ".\packages\lunasvg"
-	move /y ".\lunasvg\3rdparty" ".\packages\lunasvg"
-	move /y ".\lunasvg\include" ".\packages\lunasvg"
-	move /y ".\lunasvg\source" ".\packages\lunasvg"
+    if not exist .\packages\lunasvg mkdir .\packages\lunasvg
+    move /y ".\lunasvg\plutovg" ".\packages\lunasvg" > nul
+    move /y ".\lunasvg\include" ".\packages\lunasvg" > nul
+    move /y ".\lunasvg\source" ".\packages\lunasvg" > nul
+    rmdir /s /q lunasvg
+    echo %green%Done.%reset%
 ) else (
-	echo [ LunaSVG ] No directory found
-	exit /b
+    echo %red%Failed.%reset%
+    exit /b 1
 )
 
-if not exist .\packages\imgui mkdir .\packages\imgui
+rem --- Package: GLFW ---
+echo|set /p="- Installing %yellow%GLFW%reset%             ... "
+git clone --depth 1 https://github.com/glfw/glfw.git > nul 2>&1
+if exist glfw (
+    if not exist .\packages\glfw mkdir .\packages\glfw
+    move /y ".\glfw\deps" ".\packages\glfw" > nul
+    move /y ".\glfw\include" ".\packages\glfw" > nul
+    move /y ".\glfw\src" ".\packages\glfw" > nul
+    rmdir /s /q glfw
+    echo %green%Done.%reset%
+) else (
+    echo %red%Failed.%reset%
+    exit /b 1
+)
+
+rem --- Package: ImAnim ---
+echo|set /p="- Installing %yellow%ImAnim%reset%           ... "
+if not exist .\packages\ImAnim mkdir .\packages\ImAnim
+git clone --depth 1 https://github.com/akash1474/ImAnim.git .\packages\ImAnim > nul 2>&1
+if exist .\packages\ImAnim (
+    echo %green%Done.%reset%
+) else (
+    echo %red%Failed.%reset%
+    exit /b 1
+)
 
 
-echo -- Setting up imgui
-move /y ".\imgui\*.cpp" ".\packages\imgui"
-move /y ".\imgui\*.h" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_opengl2.cpp" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_opengl2.h" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_opengl3.cpp" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_opengl3.h" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_opengl3_loader.h" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_glfw.cpp" ".\packages\imgui"
-move /y ".\imgui\backends\imgui_impl_glfw.h" ".\packages\imgui"
+rem --- Package: ImGui ---
+echo|set /p="- Installing %yellow%ImGui%reset%            ... "
+if /i [%1] == [imgui-docking] (
+    git clone -b v1.92.3-docking --single-branch https://github.com/ocornut/imgui.git --depth 1 > nul 2>&1
+) else (
+    git clone -b v1.92.3 --single-branch https://github.com/ocornut/imgui.git --depth 1 > nul 2>&1
+)
+if exist imgui (
+    if not exist .\packages\imgui mkdir .\packages\imgui
+    move /y ".\imgui\*.cpp" ".\packages\imgui" > nul
+    move /y ".\imgui\*.h" ".\packages\imgui" > nul
+    move /y ".\imgui\backends\imgui_impl_glfw.*" ".\packages\imgui" > nul
+    move /y ".\imgui\backends\imgui_impl_opengl*.*" ".\packages\imgui" > nul
+    rmdir /s /q imgui
+    echo %green%Done.%reset%
+) else (
+    echo %red%Failed.%reset%
+    exit /b 1
+)
 
-echo -- Cleaning
-rmdir /s /q imgui
-rmdir /s /q glfw
-rmdir /s /q lunasvg
-rmdir /s /q json
+rem --- Package: Nlohmann JSON ---
+echo|set /p="- Installing %yellow%Nlohmann JSON%reset%    ... "
+git clone --depth 1 https://github.com/nlohmann/json.git > nul 2>&1
+if exist json (
+    if not exist .\packages\nlohmann mkdir .\packages\nlohmann
+    move /y ".\json\include" ".\packages\nlohmann" > nul
+    rmdir /s /q json
+    echo %green%Done.%reset%
+) else (
+    echo %red%Failed.%reset%
+    exit /b 1
+)
+
+rem --- Package: spdlog ---
+echo|set /p="- Installing %yellow%spdlog%reset%           ... "
+if not exist .\packages\spdlog mkdir .\packages\spdlog
+git clone -b v1.15.3 --single-branch https://github.com/gabime/spdlog.git --depth 1 ./packages/spdlog > nul 2>&1
+if exist .\packages\spdlog\.git (
+    rmdir /s /q .\packages\spdlog\.git
+    echo %green%Done.%reset%
+) else (
+    echo %red%Failed.%reset%
+    exit /b 1
+)
+
+rem --- Final cleanup message ---
+echo|set /p="- Cleaning up temporary files ... "
+echo %green%Done.%reset%
+
+echo.
+echo %green% ✅ Setup complete! %green%
+echo.
+
+rem --- Final build step from original script ---
 build
+
+endlocal

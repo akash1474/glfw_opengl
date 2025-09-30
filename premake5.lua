@@ -21,7 +21,8 @@ includeDirs["glfw"]="packages/glfw/include"
 includeDirs["SpdLog"]="packages/spdlog/include"
 includeDirs["ImGui"]="packages/imgui"
 includeDirs["LunaSVG"]="packages/lunasvg/include"
-includeDirs["nlohmann"]="packages/nlohmann"
+includeDirs["nlohmann"]="packages/nlohmann/include"
+includeDirs["ImAnim"]="packages/ImAnim/src"
 
 -- /MP -- Multithreaded build 
 -- /MT -- Static Linking. Defines _MT 
@@ -29,6 +30,7 @@ includeDirs["nlohmann"]="packages/nlohmann"
 include "packages/glfw"
 include "packages/imgui"
 include "packages/lunasvg"
+include "packages/ImAnim"
 
 project "glfw_opengl"
    kind "ConsoleApp"
@@ -40,16 +42,18 @@ project "glfw_opengl"
    pchsource "src/pch.cpp"
 
    links {
-      "glfw","ImGui","opengl32","LunaSVG","dwmapi","Shlwapi","winmm"
+      "glfw","ImGui","opengl32","LunaSVG","dwmapi","Shlwapi","winmm","ImAnim"
    }
 
    includedirs{
       "src",
+      "src/external",
       "%{includeDirs.glfw}",
       "%{includeDirs.ImGui}",
       "%{includeDirs.LunaSVG}",
       "%{includeDirs.SpdLog}",
-      "%{includeDirs.nlohmann}"
+      "%{includeDirs.nlohmann}",
+      "%{includeDirs.ImAnim}"
    }
 
    files { 
@@ -65,7 +69,7 @@ project "glfw_opengl"
       symbols "On"
       staticruntime "On"
       optimize "Off"
-      buildoptions { "/MP","/DEBUG:FULL" }
+      buildoptions { "/MP","/DEBUG:FULL","/utf-8" }
       defines {"GL_DEBUG"}
 
    filter {"configurations:Release"}

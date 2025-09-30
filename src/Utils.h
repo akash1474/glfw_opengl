@@ -9,8 +9,10 @@
 #include <stdio.h>
 #include "userenv.h"
 #include <commdlg.h>
+#include "Types.h"
 
-enum class Fonts{
+enum class Fonts
+{
     JetBrainsMonoNLRegular,
     JetBrainsMonoNLItalic,
     MonoLisaRegular,
@@ -49,7 +51,7 @@ inline void SetStyleColorDarkness()
     colors[ImGuiCol_FrameBg] = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
     colors[ImGuiCol_FrameBgHovered] = ImVec4(0.19f, 0.19f, 0.19f, 0.54f);
     colors[ImGuiCol_FrameBgActive] = ImVec4(0.20f, 0.22f, 0.23f, 1.00f);
-    colors[ImGuiCol_TitleBg] = ImVec4(0.068f,0.068f,0.068f,1.000f);
+    colors[ImGuiCol_TitleBg] = ImVec4(0.068f, 0.068f, 0.068f, 1.000f);
     colors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
@@ -108,7 +110,7 @@ inline void SetStyleColorDarkness()
     style.PopupBorderSize = 1;
     style.FrameBorderSize = 1;
     style.TabBorderSize = 1;
-    style.TabBarOverlineSize=3;
+    style.TabBarOverlineSize = 3;
     style.WindowRounding = 2.0f;
     style.ChildRounding = 2.0f;
     style.FrameRounding = 2.0f;
@@ -123,67 +125,67 @@ inline void SetStyleColorDarkness()
 inline void StyleColorsDracula()
 {
     auto& colors = ImGui::GetStyle().Colors;
-    colors[ImGuiCol_WindowBg] = ImVec4{0.1f, 0.1f, 0.13f, 1.0f};
-    colors[ImGuiCol_MenuBarBg] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
+    colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
+    colors[ImGuiCol_MenuBarBg] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
 
     // Border
-    colors[ImGuiCol_Border] = ImVec4{0.44f, 0.37f, 0.61f, 0.29f};
-    colors[ImGuiCol_BorderShadow] = ImVec4{0.0f, 0.0f, 0.0f, 0.24f};
+    colors[ImGuiCol_Border] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.29f };
+    colors[ImGuiCol_BorderShadow] = ImVec4{ 0.0f, 0.0f, 0.0f, 0.24f };
 
     // Text
-    colors[ImGuiCol_Text] = ImVec4{1.0f, 1.0f, 1.0f, 1.0f};
-    colors[ImGuiCol_TextDisabled] = ImVec4{0.5f, 0.5f, 0.5f, 1.0f};
+    colors[ImGuiCol_Text] = ImVec4{ 1.0f, 1.0f, 1.0f, 1.0f };
+    colors[ImGuiCol_TextDisabled] = ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f };
 
     // Headers
-    colors[ImGuiCol_Header] = ImVec4{0.13f, 0.13f, 0.17f, 1.0f};
-    colors[ImGuiCol_HeaderHovered] = ImVec4{0.19f, 0.2f, 0.25f, 1.0f};
-    colors[ImGuiCol_HeaderActive] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
+    colors[ImGuiCol_Header] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+    colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+    colors[ImGuiCol_HeaderActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
 
     // Buttons
-    colors[ImGuiCol_Button] = ImVec4{0.13f, 0.13f, 0.17f, 1.0f};
-    colors[ImGuiCol_ButtonHovered] = ImVec4{0.19f, 0.2f, 0.25f, 1.0f};
-    colors[ImGuiCol_ButtonActive] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_CheckMark] = ImVec4{0.74f, 0.58f, 0.98f, 1.0f};
+    colors[ImGuiCol_Button] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+    colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+    colors[ImGuiCol_ButtonActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_CheckMark] = ImVec4{ 0.74f, 0.58f, 0.98f, 1.0f };
 
     // Popups
-    colors[ImGuiCol_PopupBg] = ImVec4{0.1f, 0.1f, 0.13f, 0.92f};
+    colors[ImGuiCol_PopupBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 0.92f };
 
     // Slider
-    colors[ImGuiCol_SliderGrab] = ImVec4{0.44f, 0.37f, 0.61f, 0.54f};
-    colors[ImGuiCol_SliderGrabActive] = ImVec4{0.74f, 0.58f, 0.98f, 0.54f};
+    colors[ImGuiCol_SliderGrab] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.54f };
+    colors[ImGuiCol_SliderGrabActive] = ImVec4{ 0.74f, 0.58f, 0.98f, 0.54f };
 
     // Frame BG
-    colors[ImGuiCol_FrameBg] = ImVec4{0.13f, 0.13f, 0.17f, 1.0f};
-    colors[ImGuiCol_FrameBgHovered] = ImVec4{0.19f, 0.2f, 0.25f, 1.0f};
-    colors[ImGuiCol_FrameBgActive] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
+    colors[ImGuiCol_FrameBg] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+    colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+    colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
 
     // Tabs
-    colors[ImGuiCol_Tab] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_TabHovered] = ImVec4{0.24f, 0.24f, 0.32f, 1.0f};
-    colors[ImGuiCol_TabActive] = ImVec4{0.2f, 0.22f, 0.27f, 1.0f};
-    colors[ImGuiCol_TabUnfocused] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_TabUnfocusedActive] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
+    colors[ImGuiCol_Tab] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_TabHovered] = ImVec4{ 0.24f, 0.24f, 0.32f, 1.0f };
+    colors[ImGuiCol_TabActive] = ImVec4{ 0.2f, 0.22f, 0.27f, 1.0f };
+    colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
 
     // Title
-    colors[ImGuiCol_TitleBg] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_TitleBgActive] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_TitleBgCollapsed] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
+    colors[ImGuiCol_TitleBg] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
 
     // Scrollbar
-    colors[ImGuiCol_ScrollbarBg] = ImVec4{0.1f, 0.1f, 0.13f, 1.0f};
-    colors[ImGuiCol_ScrollbarGrab] = ImVec4{0.16f, 0.16f, 0.21f, 1.0f};
-    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4{0.19f, 0.2f, 0.25f, 1.0f};
-    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4{0.24f, 0.24f, 0.32f, 1.0f};
+    colors[ImGuiCol_ScrollbarBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4{ 0.24f, 0.24f, 0.32f, 1.0f };
 
     // Seperator
-    colors[ImGuiCol_Separator] = ImVec4{0.44f, 0.37f, 0.61f, 1.0f};
-    colors[ImGuiCol_SeparatorHovered] = ImVec4{0.74f, 0.58f, 0.98f, 1.0f};
-    colors[ImGuiCol_SeparatorActive] = ImVec4{0.84f, 0.58f, 1.0f, 1.0f};
+    colors[ImGuiCol_Separator] = ImVec4{ 0.44f, 0.37f, 0.61f, 1.0f };
+    colors[ImGuiCol_SeparatorHovered] = ImVec4{ 0.74f, 0.58f, 0.98f, 1.0f };
+    colors[ImGuiCol_SeparatorActive] = ImVec4{ 0.84f, 0.58f, 1.0f, 1.0f };
 
     // Resize Grip
-    colors[ImGuiCol_ResizeGrip] = ImVec4{0.44f, 0.37f, 0.61f, 0.29f};
-    colors[ImGuiCol_ResizeGripHovered] = ImVec4{0.74f, 0.58f, 0.98f, 0.29f};
-    colors[ImGuiCol_ResizeGripActive] = ImVec4{0.84f, 0.58f, 1.0f, 0.29f};
+    colors[ImGuiCol_ResizeGrip] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.29f };
+    colors[ImGuiCol_ResizeGripHovered] = ImVec4{ 0.74f, 0.58f, 0.98f, 0.29f };
+    colors[ImGuiCol_ResizeGripActive] = ImVec4{ 0.84f, 0.58f, 1.0f, 0.29f };
 
 
     auto& style = ImGui::GetStyle();
@@ -198,23 +200,53 @@ inline void StyleColorsDracula()
 
 
 
-//Converts UTF16LE encoded std::wstring to std::string with UTF8 Encoding
-inline std::string ToUTF8(std::wstring wString){
-    if(wString.empty()) return "";
+// Converts UTF16LE encoded std::wstring to std::string with UTF8 Encoding
+inline std::string ToUTF8(std::wstring wString)
+{
+    if(wString.empty())
+        return "";
 
-    int size_needed = WideCharToMultiByte(CP_UTF8, 0, wString.c_str(), (int)wString.size(), nullptr, 0, nullptr, nullptr);
-    std::string utf8String(size_needed,0);
-    WideCharToMultiByte(CP_UTF8, 0, wString.c_str(), (int)wString.size(), &utf8String[0], size_needed, nullptr, nullptr); 
+    int size_needed = WideCharToMultiByte(
+        CP_UTF8,
+        0,
+        wString.c_str(),
+        (int)wString.size(),
+        nullptr,
+        0,
+        nullptr,
+        nullptr
+    );
+    std::string utf8String(size_needed, 0);
+    WideCharToMultiByte(
+        CP_UTF8,
+        0,
+        wString.c_str(),
+        (int)wString.size(),
+        &utf8String[0],
+        size_needed,
+        nullptr,
+        nullptr
+    );
     return utf8String;
 }
 
-//Converts UTF8 encoded std::string to std::wstring with UTF16LE Encoding
-inline std::wstring StringToWString(const std::string& utf8_string) {
-    if(utf8_string.empty()) return L"";
+// Converts UTF8 encoded std::string to std::wstring with UTF16LE Encoding
+inline std::wstring StringToWString(const std::string& utf8_string)
+{
+    if(utf8_string.empty())
+        return L"";
 
-    int size_needed = MultiByteToWideChar(CP_UTF8, 0, utf8_string.c_str(), (int)utf8_string.size(), nullptr, 0);
-    std::wstring wideString(size_needed,0);
-    MultiByteToWideChar(CP_UTF8, 0, utf8_string.c_str(), (int)utf8_string.size(), &wideString[0], size_needed);
+    int size_needed
+        = MultiByteToWideChar(CP_UTF8, 0, utf8_string.c_str(), (int)utf8_string.size(), nullptr, 0);
+    std::wstring wideString(size_needed, 0);
+    MultiByteToWideChar(
+        CP_UTF8,
+        0,
+        utf8_string.c_str(),
+        (int)utf8_string.size(),
+        &wideString[0],
+        size_needed
+    );
     return wideString;
 }
 
@@ -222,19 +254,19 @@ inline std::wstring StringToWString(const std::string& utf8_string) {
 inline std::string SaveFileAs(std::string fileContent)
 {
     // Initialize the OPENFILENAME structure
-    OPENFILENAMEW ofn = {0};
+    OPENFILENAMEW ofn = { 0 };
     wchar_t fileName[MAX_PATH] = L""; // Buffer for the selected file name
 
     ofn.lStructSize = sizeof(OPENFILENAME);
-    ofn.hwndOwner = nullptr;       // Owner window handle, nullptr for no owner
+    ofn.hwndOwner = nullptr; // Owner window handle, nullptr for no owner
     ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
-    ofn.lpstrFile = fileName;      // Buffer to receive the file name
+    ofn.lpstrFile = fileName; // Buffer to receive the file name
     ofn.nMaxFile = MAX_PATH;
-    ofn.lpstrTitle = L"Save As";    // Title of the dialog box
-    ofn.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR ; // Prompt before overwriting a file
+    ofn.lpstrTitle = L"Save As";                       // Title of the dialog box
+    ofn.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR; // Prompt before overwriting a file
 
     // Open the Save As dialog
-    if (GetSaveFileNameW(&ofn))
+    if(GetSaveFileNameW(&ofn))
     {
         // Get the selected file name
         std::string selectedFileName = ToUTF8(fileName);
@@ -242,7 +274,7 @@ inline std::string SaveFileAs(std::string fileContent)
 
         // Save the file content to the selected file
         std::ofstream outFile(selectedFileName);
-        if (outFile)
+        if(outFile)
         {
             outFile << fileContent;
             outFile.close();
@@ -250,7 +282,7 @@ inline std::string SaveFileAs(std::string fileContent)
         }
         else
         {
-            GL_CRITICAL("Failed to save the file: {}",selectedFileName);
+            GL_CRITICAL("Failed to save the file: {}", selectedFileName);
         }
     }
     else
@@ -262,21 +294,27 @@ inline std::string SaveFileAs(std::string fileContent)
 }
 
 
-inline std::string SelectFolder(){
+inline std::string SelectFolder()
+{
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
     std::wstring folder_path;
-    IFileDialog *pfd;
-    if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd)))) {
+    IFileDialog* pfd;
+    if(SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd))))
+    {
         DWORD dwOptions;
-        if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
+        if(SUCCEEDED(pfd->GetOptions(&dwOptions)))
+        {
             pfd->SetOptions(dwOptions | FOS_PICKFOLDERS);
 
-            if (SUCCEEDED(pfd->Show(NULL))) {
-                IShellItem *psi;
-                if (SUCCEEDED(pfd->GetResult(&psi))) {
+            if(SUCCEEDED(pfd->Show(NULL)))
+            {
+                IShellItem* psi;
+                if(SUCCEEDED(pfd->GetResult(&psi)))
+                {
                     PWSTR pszPath;
-                    if (SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath))) {
-                        folder_path=pszPath;
+                    if(SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                    {
+                        folder_path = pszPath;
                         CoTaskMemFree(pszPath);
                     }
                     psi->Release();
@@ -287,7 +325,8 @@ inline std::string SelectFolder(){
     }
 
     CoUninitialize();
-    if (!folder_path.empty()) {
+    if(!folder_path.empty())
+    {
         std::string path = ToUTF8(folder_path);
         GL_INFO("FOLDER SELECTED: {}", path.c_str());
         return path;
@@ -297,25 +336,30 @@ inline std::string SelectFolder(){
 }
 
 
-inline std::string SelectFile(){
+inline std::string SelectFile()
+{
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
     std::wstring filePath;
 
-    IFileDialog *pfd;
-    if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd)))) {
+    IFileDialog* pfd;
+    if(SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd))))
+    {
         // Set the file dialog options
         DWORD dwOptions;
-        if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
+        if(SUCCEEDED(pfd->GetOptions(&dwOptions)))
+        {
             pfd->SetOptions(dwOptions | FOS_ALLOWMULTISELECT);
 
             // Show the file dialog
-            if (SUCCEEDED(pfd->Show(NULL))) {
-                IShellItem *psi;
-                if (SUCCEEDED(pfd->GetResult(&psi))) {
+            if(SUCCEEDED(pfd->Show(NULL)))
+            {
+                IShellItem* psi;
+                if(SUCCEEDED(pfd->GetResult(&psi)))
+                {
                     PWSTR pszPath;
-                    if (SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath))) {
-
-                        filePath=pszPath;
+                    if(SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                    {
+                        filePath = pszPath;
                         CoTaskMemFree(pszPath);
                     }
                     psi->Release();
@@ -329,27 +373,81 @@ inline std::string SelectFile(){
     return ToUTF8(filePath);
 }
 
+inline fs::path SelectTTFFile()
+{
+    fs::path filePath;
+    HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+    if(SUCCEEDED(hr))
+    {
+        IFileOpenDialog* pfd;
+        hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd));
+        if(SUCCEEDED(hr))
+        {
+            // --- ADDED: Set the file type filter for .ttf files ---
+            COMDLG_FILTERSPEC rgSpec[] = {
+                { L"TrueType Font", L"*.ttf" },
+                { L"All Files", L"*.*" },
+            };
+            pfd->SetFileTypes(ARRAYSIZE(rgSpec), rgSpec);
+            // --------------------------------------------------------
 
-inline std::vector<std::wstring> SelectFiles() {
+            DWORD dwOptions;
+            if(SUCCEEDED(pfd->GetOptions(&dwOptions)))
+            {
+                pfd->SetOptions(dwOptions | FOS_FORCEFILESYSTEM);
+                if(SUCCEEDED(pfd->Show(NULL)))
+                {
+                    IShellItem* psi;
+                    if(SUCCEEDED(pfd->GetResult(&psi)))
+                    {
+                        PWSTR pszPath;
+                        if(SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                        {
+                            // Convert the wstring path to a standard string
+                            filePath = pszPath;
+                            CoTaskMemFree(pszPath);
+                        }
+                        psi->Release();
+                    }
+                }
+            }
+            pfd->Release();
+        }
+        CoUninitialize();
+    }
+    return filePath;
+}
+
+
+inline std::vector<std::wstring> SelectFiles()
+{
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 
     std::vector<std::wstring> files;
-    IFileOpenDialog *pfd;
-    if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd)))) {
+    IFileOpenDialog* pfd;
+    if(SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfd))))
+    {
         DWORD dwOptions;
-        if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
+        if(SUCCEEDED(pfd->GetOptions(&dwOptions)))
+        {
             pfd->SetOptions(dwOptions | FOS_ALLOWMULTISELECT);
 
-            if (SUCCEEDED(pfd->Show(NULL))) {
-                IShellItemArray *psia;
-                if (SUCCEEDED(pfd->GetResults(&psia))) {
+            if(SUCCEEDED(pfd->Show(NULL)))
+            {
+                IShellItemArray* psia;
+                if(SUCCEEDED(pfd->GetResults(&psia)))
+                {
                     DWORD fileCount;
-                    if (SUCCEEDED(psia->GetCount(&fileCount))) {
-                        for (DWORD i = 0; i < fileCount; ++i) {
-                            IShellItem *psi;
-                            if (SUCCEEDED(psia->GetItemAt(i, &psi))) {
+                    if(SUCCEEDED(psia->GetCount(&fileCount)))
+                    {
+                        for(DWORD i = 0; i < fileCount; ++i)
+                        {
+                            IShellItem* psi;
+                            if(SUCCEEDED(psia->GetItemAt(i, &psi)))
+                            {
                                 PWSTR pszPath;
-                                if (SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath))) {
+                                if(SUCCEEDED(psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                                {
                                     files.push_back(pszPath);
                                     CoTaskMemFree(pszPath);
                                 }
@@ -368,34 +466,45 @@ inline std::vector<std::wstring> SelectFiles() {
     return files;
 }
 
-inline void ShowErrorMessage(const char* errorMessage) {
+inline void ShowErrorMessage(const char* errorMessage)
+{
     MessageBoxA(nullptr, errorMessage, "Error", MB_ICONERROR | MB_OK);
 }
 
-inline void ShowMessage(const char* title,const char* msg) {
+inline void ShowMessage(const char* title, const char* msg)
+{
     MessageBoxA(nullptr, msg, title, MB_OK | MB_ICONINFORMATION);
 }
 
-inline std::string GetUserDirectory(const char* app_folder=nullptr){
+inline std::string GetUserDirectory(const char* app_folder = nullptr)
+{
     char profileDir[MAX_PATH];
     DWORD size = sizeof(profileDir);
 
     // Get the user's profile directory
-    if (!GetUserProfileDirectoryA(GetCurrentProcessToken(), profileDir, &size)) {
+    if(!GetUserProfileDirectoryA(GetCurrentProcessToken(), profileDir, &size))
+    {
         DWORD error = GetLastError();
 
         char errorMessage[256];
-        sprintf_s(errorMessage, sizeof(errorMessage), "Error getting user profile directory. Error code: %lu\n Try running as administrator.", error);
+        sprintf_s(
+            errorMessage,
+            sizeof(errorMessage),
+            "Error getting user profile directory. Error code: %lu\n Try running as administrator.",
+            error
+        );
         ShowErrorMessage(errorMessage);
     }
-    if(app_folder){
+    if(app_folder)
+    {
         std::string path(profileDir);
-        path+="\\"+std::string(app_folder);
-        if(!std::filesystem::exists(path)) std::filesystem::create_directory(path);
-        GL_INFO("ROOT PATH:{}",path);
+        path += "\\" + std::string(app_folder);
+        if(!std::filesystem::exists(path))
+            std::filesystem::create_directory(path);
+        GL_INFO("ROOT PATH:{}", path);
         return std::string(path);
     }
-    GL_INFO("ROOT PATH:{}",profileDir);
+    GL_INFO("ROOT PATH:{}", profileDir);
     return std::string(profileDir);
 }
 
