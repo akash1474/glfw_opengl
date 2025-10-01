@@ -45,53 +45,14 @@ void ImageTexture::loadFromMemory(unsigned char* img_data, size_t size)
     this->mIsLoaded = true;
 }
 
-void GeneratePallet(
-    const std::vector<ImColor>& centers,
-    int tileSize = 64,
-    const std::string& filename = "pallet.png"
-)
-{
-    OpenGL::ScopedTimer timer("ImageTexture::generatePallet");
-    int count = static_cast<int>(centers.size());
-    int width = tileSize * count;
-    int height = tileSize;
 
-    std::vector<unsigned char> image(width * height * 3, 0);
-
-    for(int c = 0; c < count; ++c)
-    {
-        int r = static_cast<int>(centers[c].Value.x * 255.0f);
-        int g = static_cast<int>(centers[c].Value.y * 255.0f);
-        int b = static_cast<int>(centers[c].Value.z * 255.0f);
-
-        for(int y = 0; y < tileSize; ++y)
-        {
-            for(int x = 0; x < tileSize; ++x)
-            {
-                int px = (c * tileSize + x);
-                int idx = (y * width + px) * 3;
-                image[idx + 0] = r;
-                image[idx + 1] = g;
-                image[idx + 2] = b;
-            }
-        }
-    }
-
-    stbi_write_png(filename.c_str(), width, height, 3, image.data(), width * 3);
-}
-
-
-
-
-
-bool ImageTexture::loadFromFile(
-    const fs::path& aFilePath
-)
+bool ImageTexture::loadFromFile(const fs::path& aFilePath)
 {
     OpenGL::ScopedTimer timer("ImageTexture::LoadTexture");
     int width = 0, height = 0, channels = 0;
-    if(!fs::exists(aFilePath)){
-        GL_ERROR("InvalidPath:{}",aFilePath.u8string());
+    if(!fs::exists(aFilePath))
+    {
+        GL_ERROR("InvalidPath:{}", aFilePath.u8string());
         return false;
     }
 
@@ -105,7 +66,7 @@ bool ImageTexture::loadFromFile(
 
     if(!originalData)
     {
-        GL_ERROR("ImageTexture::LoadTexture : Empty Image file - {}",aFilePath.string());
+        GL_ERROR("ImageTexture::LoadTexture : Empty Image file - {}", aFilePath.string());
         fs::remove(aFilePath);
         return false;
     }
@@ -158,12 +119,7 @@ void ImageTexture::LoadAsync(ImageTexture* img, std::future<bool>& mFuture)
     if(!img)
         return;
     if(!mFuture.valid())
-        mFuture = std::async(
-            std::launch::async,
-            &ImageTexture::loadFromFile,
-            img,
-            img->mFilePath
-        );
+        mFuture = std::async(std::launch::async, &ImageTexture::loadFromFile, img, img->mFilePath);
 
     if(!img->isLoaded() && mFuture.valid()
        && mFuture.wait_for(std::chrono::milliseconds(5)) == std::future_status::ready)
@@ -172,7 +128,6 @@ void ImageTexture::LoadAsync(ImageTexture* img, std::future<bool>& mFuture)
             img->bindTexture();
     }
 }
-
 
 
 void ImageTexture::AsyncImage(ImageTexture* img, const ImVec2& size)

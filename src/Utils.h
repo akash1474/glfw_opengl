@@ -11,15 +11,6 @@
 #include <commdlg.h>
 #include "Types.h"
 
-enum class Fonts
-{
-    JetBrainsMonoNLRegular,
-    JetBrainsMonoNLItalic,
-    MonoLisaRegular,
-    MonoLisaMedium,
-};
-
-
 inline ImColor darkerShade(ImVec4 color, float multiplier = 0.1428)
 {
     multiplier = 1.0f - multiplier;
@@ -499,8 +490,8 @@ inline std::string GetUserDirectory(const char* app_folder = nullptr)
     {
         std::string path(profileDir);
         path += "\\" + std::string(app_folder);
-        if(!std::filesystem::exists(path))
-            std::filesystem::create_directory(path);
+        if(!fs::exists(path))
+            fs::create_directory(path);
         GL_INFO("ROOT PATH:{}", path);
         return std::string(path);
     }
@@ -523,7 +514,7 @@ inline std::string GetUserDirectory(const char* app_folder = nullptr)
 //         std::ifstream file("git.txt");
 //         std::getline(file,result);
 //         file.close();
-//         std::filesystem::remove("git.txt");
+//         fs::remove("git.txt");
 //         return result;
 //     }
 //     return "None";
