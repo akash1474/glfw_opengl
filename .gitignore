@@ -7,8 +7,11 @@ compile_commands.json
 !packages/imgui/premake5.lua
 !packages/glfw/premake5.lua
 !packages/lunasvg/premake5.lua
+package/ImAnim
 *.sln
 *.filters
 *.user
 .vs
 *.log
+*.dll
+*.lib

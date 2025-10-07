@@ -53,6 +53,11 @@ bool Application::Init()
         NULL,
         NULL
     );
+    if(Get().mWindow == nullptr)
+    {
+        GL_CRITICAL("Failed to create GLFWwindow!");
+        return false;
+    }
     glfwSetWindowSizeLimits(Get().mWindow, 380, 500, GLFW_DONT_CARE, GLFW_DONT_CARE);
     if(!Get().mWindow)
     {
@@ -287,8 +292,81 @@ void Application::ApplySmoothScrolling()
     io.MouseWheel = scrollNow.y;
 }
 
+void Application::SetScriptPath(const std::string& path) { Get().m_scriptPath = path; }
 
-void Application::Render() { ImGui::ShowDemoWindow(); }
+// Reloads the Lua script and updates the last-modified time
+void Application::ReloadScript()
+{
+    Application& app = Get();
+    if(!std::filesystem::exists(app.m_scriptPath))
+    {
+        GL_ERROR("Script file '{}' does not exist!", app.m_scriptPath.string());
+        return;
+    }
+
+    GL_INFO("Reloading script: {}", app.m_scriptPath.string());
+    try
+    {
+        // This is the crucial part: we re-run the script file.
+        // This will overwrite the OnImGuiDraw function with the new version.
+        app.mLua.script_file(app.m_scriptPath.string());
+
+        // Update the timestamp so we don't reload it again immediately
+        app.m_lastWriteTime = std::filesystem::last_write_time(app.m_scriptPath);
+    }
+    catch(const sol::error& e)
+    {
+        // IMPORTANT: Catch syntax errors so a typo in Lua doesn't crash the app!
+        GL_ERROR("LUA ERROR: {}", e.what());
+    }
+}
+
+// Checks if the script file has been modified
+void Application::PollScriptChanges()
+{
+    Application& app = Get();
+
+    // Throttle the check to once per second to be efficient
+    auto now = std::chrono::steady_clock::now();
+    if(now - app.m_lastPollTime < std::chrono::seconds(1))
+    {
+        return;
+    }
+    app.m_lastPollTime = now;
+
+    if(!std::filesystem::exists(app.m_scriptPath))
+    {
+        return;
+    }
+
+    auto currentWriteTime = std::filesystem::last_write_time(app.m_scriptPath);
+
+    if(currentWriteTime > app.m_lastWriteTime)
+    {
+        ReloadScript();
+    }
+}
+
+
+void Application::Render()
+{
+    try
+    {
+        sol::function on_draw = GetLua()["OnImGuiDraw"];
+        if(on_draw.valid())
+        {
+            on_draw();
+        }
+        else
+        {
+            GL_WARN("Application::Render() - No Lua OnDraw found!");
+        }
+    }
+    catch(const std::exception& exception)
+    {
+        GL_CRITICAL("Error:{}", exception.what());
+    }
+}
 
 void Application::PreRender()
 {

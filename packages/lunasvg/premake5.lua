@@ -1,6 +1,8 @@
 project "LunaSVG"
 	kind "StaticLib"
+	staticruntime "Off"
 	language "C++"
+    buildoptions { "/MP" }
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -29,19 +31,13 @@ project "LunaSVG"
 		runtime "Debug"
 		symbols "on"
 		optimize "off"
-		staticruntime "On"
-      	buildoptions { "/MP" }
 
 	filter "configurations:Release"
 		runtime "Release"
 		optimize "On"
-		staticruntime "On"
-      	buildoptions { "/MP" }
 
     filter "configurations:Dist"
 		runtime "Release"
 		optimize "on"
         symbols "off"
-		staticruntime "On"
-        buildoptions { "/MP" }
 

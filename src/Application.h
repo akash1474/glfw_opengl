@@ -2,14 +2,18 @@
 #include <iostream>
 #include "GLFW/glfw3.h"
 #include "imgui.h"
+#include "sol/sol.hpp"
+#include <chrono>
+#include "Types.h"
 
 class Application
 {
 private:
 	GLFWwindow* mWindow{0};
-	int width = 1100;
-	int height = 650;
+	int width = 900;
+	int height = 450;
 	bool mIsFocused;
+	sol::state mLua;
 
     // FPS Management
     bool mNeedsContinuousUpdate = false;
@@ -18,6 +22,10 @@ private:
     const float scroll_multiplier = 1.0f;
     const float scroll_smoothing = 8.0f;
     ImVec2 scroll_energy;
+
+    fs::path m_scriptPath;
+    fs::file_time_type m_lastWriteTime;
+    std::chrono::steady_clock::time_point m_lastPollTime;
 
 
 public:
@@ -29,6 +37,10 @@ public:
 		static Application instance;
 		return instance;
 	}
+	static sol::state& GetLua() { return Get().mLua; }
+	static void SetScriptPath(const std::string& path);
+    static void ReloadScript();
+    static void PollScriptChanges();
 
     // FPS Management
     static bool NeedsContinuousUpdate() { return Get().mNeedsContinuousUpdate; }

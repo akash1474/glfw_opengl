@@ -9,6 +9,7 @@
 #include "GLFW/glfw3.h"
 #include "MultiThreading.h"
 #include "AbstractAnimation.h"
+#include <sol/sol.hpp>
 
 
 
@@ -43,6 +44,22 @@ int main(int argc, char* argv[])
 
     GL_CRITICAL("BootUp Time: {}ms", timer.ElapsedMillis());
 
+    sol::state& lua = Application::GetLua();
+    lua.open_libraries(
+        sol::lib::base,
+        sol::lib::package,
+        sol::lib::io,
+        sol::lib::ffi,
+        sol::lib::string,
+        sol::lib::math
+    );
+
+    lua.script_file("imgui_bootstrap.lua");
+    lua.script_file("script.lua");
+
+
+    Application::SetScriptPath("script.lua");
+    Application::ReloadScript();
 
     while(!glfwWindowShouldClose(Application::GetGLFWwindow()))
     {
@@ -61,7 +78,7 @@ int main(int argc, char* argv[])
             // When idle, wait for an event or timeout after a short duration.
             glfwWaitEventsTimeout(1.0 / 15.0);
         }
-
+        Application::PollScriptChanges();
         Application::Draw();
     }
 
@@ -107,4 +124,3 @@ int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 }
 #endif
 #endif
-

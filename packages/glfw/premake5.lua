@@ -1,11 +1,12 @@
 project "glfw"
-	kind "StaticLib"
+	kind "SharedLib"
 	language "C"
-	staticruntime "off"
+	staticruntime "Off"
 	warnings "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	defines { "_GLFW_BUILD_DLL" }
 
 	files
 	{
@@ -101,15 +102,12 @@ project "glfw"
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "on"
-		buildoptions {"/MTd"}
 
 	filter "configurations:Release"
 		runtime "Release"
 		optimize "speed"
-		buildoptions {"/MT"}
 
     filter "configurations:Dist"
 		runtime "Release"
 		optimize "speed"
         symbols "off"
-		buildoptions {"/MT"}

@@ -1,6 +1,8 @@
 project "ImGui"
-	kind "StaticLib"
+	kind "SharedLib"
+	staticruntime "Off"
 	language "C++"
+    buildoptions { "/MP" }
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -12,8 +14,10 @@ project "ImGui"
 	}
 
 	links{"glfw"}
+	libdirs {"%{wks.location}/packages/glfw/bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/glfw"}
 	
 	includedirs{".","../glfw/include"}
+	defines { "IMGUI_API=__declspec(dllexport)", "GLFW_DLL" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -28,18 +32,12 @@ project "ImGui"
 		runtime "Debug"
 		symbols "on"
 		optimize "off"
-		staticruntime "On"
-      	buildoptions { "/MP" }
 
 	filter "configurations:Release"
 		runtime "Release"
 		optimize "On"
-		staticruntime "On"
-      	buildoptions { "/MP" }
 
     filter "configurations:Dist"
 		runtime "Release"
 		optimize "on"
         symbols "off"
-		staticruntime "On"
-        buildoptions { "/MP" }
