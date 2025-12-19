@@ -17,9 +17,9 @@ for /d %%D in ("%BASE_DIR%\*") do (
     ) else (
       if exist "%%D\premake5.lua" (
         echo [Cleaned] - %%D
-        rem Delete files except premake5.lua
+        rem Delete files except premake5.lua and imconfig.h
         for /f "delims=" %%F in ('dir /b /a-d "%%D" 2^>nul') do (
-          if /i not "%%F"=="premake5.lua" del /f /q "%%D\%%F"
+          if /i not "%%F"=="premake5.lua" if /i not "%%F"=="imconfig.h" del /f /q "%%D\%%F"
         )
         rem Delete subfolders
         for /f "delims=" %%S in ('dir /b /ad "%%D" 2^>nul') do (

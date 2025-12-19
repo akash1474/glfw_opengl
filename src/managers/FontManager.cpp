@@ -7,7 +7,7 @@
 #include "Timer.h"
 #include "imgui.h"
 #include "PathManager.h"
-#include "imgui_freetype.h"
+#include "misc\freetype\imgui_freetype.h"
 #include "resources/FontAwesomeSolid.embed"
 #include "nlohmann/json.hpp"
 
