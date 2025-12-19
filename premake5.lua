@@ -79,6 +79,7 @@ includeDirs["ImGui"]="packages/imgui"
 includeDirs["LunaSVG"]="packages/lunasvg/include"
 includeDirs["nlohmann"]="packages/nlohmann/include"
 includeDirs["ImAnim"]="packages/ImAnim/src"
+includeDirs["freetype"]="packages/freetype/include"
 
 -- /MP -- Multithreaded build 
 -- /MT -- Static Linking. Defines _MT 
@@ -88,7 +89,7 @@ include "packages/imgui"
 include "packages/lunasvg"
 include "packages/ImAnim"
 
-project "glfw_opengl"
+project "ImComponents"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -99,7 +100,7 @@ project "glfw_opengl"
     staticruntime "On"
 
     links {
-        "glfw","ImGui","opengl32","LunaSVG","dwmapi","Shlwapi","winmm","ImAnim"
+        "glfw","ImGui","opengl32","LunaSVG","dwmapi","Shlwapi","winmm","ImAnim","freetype"
     }
 
     includedirs{
@@ -110,7 +111,8 @@ project "glfw_opengl"
         "%{includeDirs.LunaSVG}",
         "%{includeDirs.SpdLog}",
         "%{includeDirs.nlohmann}",
-        "%{includeDirs.ImAnim}"
+        "%{includeDirs.ImAnim}",
+        "%{includeDirs.freetype}",
     }
 
     files { 

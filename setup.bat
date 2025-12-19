@@ -33,6 +33,26 @@ if exist lunasvg (
     exit /b 1
 )
 
+rem --- Package: FreeType ---
+echo|set /p="- Installing %yellow%FreeType%reset%         ... "
+curl -L -o freetype.tar.gz https://download.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.gz > nul 2>&1
+if exist freetype.tar.gz (
+    tar -xzf freetype.tar.gz > nul 2>&1
+    if exist freetype-2.14.1 (
+        if not exist .\packages\freetype mkdir .\packages\freetype
+        move /y ".\freetype-2.14.1\include" ".\packages\freetype" > nul
+        rmdir /s /q freetype-2.14.1
+        del /q freetype.tar.gz
+        echo %green%Done.%reset%
+    ) else (
+        echo %red%Failed to extract.%reset%
+        exit /b 1
+    )
+) else (
+    echo %red%Failed to download.%reset%
+    exit /b 1
+)
+
 rem --- Package: GLFW ---
 echo|set /p="- Installing %yellow%GLFW%reset%             ... "
 git clone --depth 1 https://github.com/glfw/glfw.git > nul 2>&1
@@ -53,6 +73,7 @@ echo|set /p="- Installing %yellow%ImAnim%reset%           ... "
 if not exist .\packages\ImAnim mkdir .\packages\ImAnim
 git clone --depth 1 https://github.com/akash1474/ImAnim.git .\packages\ImAnim > nul 2>&1
 if exist .\packages\ImAnim (
+    rmdir /s /q .\packages\ImAnim\.git
     echo %green%Done.%reset%
 ) else (
     echo %red%Failed.%reset%
@@ -69,7 +90,9 @@ if /i [%1] == [imgui-docking] (
 )
 if exist imgui (
     if not exist .\packages\imgui mkdir .\packages\imgui
+    if not exist .\packages\imgui\misc\freetype mkdir .\packages\imgui\misc\freetype
     move /y ".\imgui\*.cpp" ".\packages\imgui" > nul
+    move /y ".\imgui\misc\freetype\*.*" ".\packages\imgui\misc\freetype" > nul
     move /y ".\imgui\*.h" ".\packages\imgui" > nul
     move /y ".\imgui\backends\imgui_impl_glfw.*" ".\packages\imgui" > nul
     move /y ".\imgui\backends\imgui_impl_opengl*.*" ".\packages\imgui" > nul

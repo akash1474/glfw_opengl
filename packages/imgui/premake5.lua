@@ -2,7 +2,7 @@ project "ImGui"
 	kind "StaticLib"
 	language "C++"
 	staticruntime "On"
-
+	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -13,8 +13,12 @@ project "ImGui"
 	}
 
 	links{"glfw"}
-	
-	includedirs{".","../glfw/include"}
+
+	includedirs{
+        ".",
+        "../glfw/include",
+        "../freetype/include"
+    }
 
 	filter "system:windows"
 		systemversion "latest"
